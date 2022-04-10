@@ -19,7 +19,7 @@
 ### Location of data
 
    Data is stored in %appdata% of the current user. 
-   There's is a directory for each dir you create in with the database command in the %appdata%.
+   There's is a directory for each dir you create with the database command in the %appdata%.
    The above mentioned dir will store directories for the entries you have created which in
    itself store the items you have added to the entry and the main.txt file.
    
