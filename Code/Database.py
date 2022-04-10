@@ -173,12 +173,12 @@ class Main():
 
             # "item" (secondary arg option)
             elif self.args[1].lower() == "item":
-                if self.entry is None or self.dir is None or self.fileName is None or self.fileType:
+                if self.entry is None or self.dir is None or self.fileName is None or self.fileType is None:
                     print(
                         "### Syntax invalid: Specify Dir, Entry, name (of file), (file)type  ### ")
 
                 else:
-                    if self.Read.read().viewItem(directory=self.dir, entry=self.entry, name=self.fileName, type=self.fileTypeda) == 1:
+                    if self.Read.read().viewItem(directory=self.dir, entry=self.entry, name=self.fileName, type=self.fileType) == 1:
                         self.Help.Help().smthWrong()
 
         # Write type arg

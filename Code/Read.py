@@ -114,7 +114,7 @@ class read:
 
                 elif option.lower() == "np" or option.lower() == "n":
                     self.os.system(
-                        f"notepad {self.dataLocation}{directory}\\{name}\\main.txt")
+                        f"notepad \"{self.dataLocation}{directory}\\{name}\\main.txt\"")
 
             else:
                 return 1
@@ -124,22 +124,20 @@ class read:
             return
 
         else:
-            try:
+            #try:
                 with open(self.jsonLocation, "r") as f:
                     temp = self.json.load(f)
 
                     if type == "image" or type == "i":
                         fileName = temp["dir"][directory]["content"][entry]["content"]["images"][name]["name"]
-                        self.os.system(
-                            f"powershell -command \"{self.dataLocation}{directory}\\{entry}\\images\\{fileName}\"")
+                        self.os.startfile(f"{self.dataLocation}{directory}\\{entry}\\images\\{fileName}")
 
                     elif type == "other" or type == "o":
                         fileName = temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name]["name"]
-                        self.os.system(
-                            f"powershell -command \"{self.dataLocation}{directory}\\{entry}\\otherFiles\\{fileName}\"")
+                        self.os.startfile(f"{self.dataLocation}{directory}\\{entry}\\otherFiles\\{fileName}")
 
-            except(Exception):
-                return 1
+            #except(Exception):
+            #    return 1
 
 
 if __name__ == "__main__":
