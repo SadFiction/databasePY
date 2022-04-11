@@ -246,7 +246,7 @@ class write:
                         name = rname
                     
                     if typ.lower() == "image" or typ.lower() == "i":
-                        path = path.replace("/", "\\")
+                        path = path.replace                                                    ("/", "\\")
                         location = self.dataLocation.replace("/", "\\")
                         self.os.system(
                             f" copy \"{path}\" \"{location}{directory}\\{entry}\\images\"")

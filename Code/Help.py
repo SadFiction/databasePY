@@ -82,13 +82,13 @@ class Help:
 
     def addi(self):
         print("addi <options> : adds item to the entry specified by copying the item in path provided to entry")
-        print("\toptions: -p:<mendatory(path of file) -dir:<mendatory> -en:<mendatory> -fn(filename)<optional; one will be optained from path received> -ft:<mendatory; options= image/i and other/o>(file type)>")
+        print("\toptions: -p:<mendatory(path of file) ;multiple can be given but must be seperated by ','> -dir:<mendatory> -en:<mendatory> -fn(filename)<optional; one will be optained from path/s received> -ft:<mendatory; options= image/i and other/o>(file type)>")
 
     def rmi(self):
         print("rmi <options> : removes an item from an entry")
-        print("\toptions: -dir:<mendatory> -en:<mendatory> -fn:<mendatory> -ft:<mendatory; options= image/i and other/o>(file type)")
+        print("\toptions: -dir:<mendatory> -en:<mendatory> -fn:<mendatory; multiple can be given but must be seperated by ','> -ft:<mendatory; options= image/i and other/o>(file type)")
    
-    def backup(self):
+    def backup(self): 
         print("backup <options> : copies all of the database into the specified path ")
         print("\toptions: -p(ath):<mendatory> ")
 
