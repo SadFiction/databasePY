@@ -258,16 +258,16 @@ class Main():
                 print(
                     "### Syntax invalid: please specify dir, entry, filename, filepath and filetype ###")
             else:
-                if self.Write.write().addItem(name=self.fileName, path=self.path, entry=self.entry, directory=self.dir, type=self.fileType) == 1:
+                if self.Write.write().addItem(name=self.fileName, path=self.path, entry=self.entry, directory=self.dir, typ=self.fileType) == 1:
                     self.Help.Help().smthWrong()
 
         # "rmi" (primary arg option)
         elif self.args[0].lower() == "rmi":
-            if self.fileName is None or self.entry is None or self.dir is None or type:
+            if self.fileName is None or self.entry is None or self.dir is None or self.fileType is None:
                 print(
                     "### Syntax invalid: Please specifyh dir, entry, filename and filetype")
             else:
-                if self.Write.write().removeItem(name=self.fileName, entry=self.entry, directory=self.dir, type=self.fileType) == 1:
+                if self.Write.write().removeItem(name=self.fileName, entry=self.entry, directory=self.dir, typ=self.fileType) == 1:
                     self.Help.Help().smthWrong()
 
         #other type arg

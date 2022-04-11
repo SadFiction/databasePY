@@ -1,3 +1,6 @@
+from unittest.mock import NonCallableMagicMock
+
+
 class write:
     try:
         import simplejson as json
@@ -210,38 +213,59 @@ class write:
             except(Exception):
                 return 1
 
-    def addItem(self, name=None, path=None, entry=None, directory=None, type=None):
-        if path is None or entry is None or directory is None or type is None:
+    def addItem(self, name=None, path=None, entry=None, directory=None, typ=None):
+        if path is None or entry is None or directory is None or typ is None:
             return
 
         else:
-            if self.os.path.exists(path):
-                try:
-                    if name is None:
-                        name, exten = self.os.path.splitext(
-                            self.os.path.basename(path))
+            if "," in path:
+                    pathItems = path.split(",")
+                    nameItems = None
+                    try:
+                        if "," in name:
+                            nameItems = name.split(",")#
+                    except(Exception):
+                        pass
+                    
+                    for i in range(len(pathItems)):
+                        if type(nameItems) == list:
+                            try:
+                                tempName = (nameItems[i]).strip()
+                            except(Exception):
+                                tempName = None
+                        print(tempName)
+                        self.addItem(name=tempName, path=pathItems[i].strip(), entry=entry, directory=directory, typ=typ)
 
-                    if type.lower() == "image" or type.lower() == "i":
+            elif self.os.path.exists(path):
+               
+                try:
+                    
+                    rname, exten = self.os.path.splitext(
+                            self.os.path.basename(path))
+                    if name is None:
+                        name = rname
+                    
+                    if typ.lower() == "image" or typ.lower() == "i":
                         path = path.replace("/", "\\")
                         location = self.dataLocation.replace("/", "\\")
                         self.os.system(
                             f" copy \"{path}\" \"{location}{directory}\\{entry}\\images\"")
                         with open(self.jsonLocation, "r") as f:
                             temp = self.json.load(f)
-                            data = {"name": name + exten,
+                            data = {"name": rname + exten,
                                     "size": self.os.path.getsize(path)}
                             temp["dir"][directory]["content"][entry]["content"]["images"][name] = data
                             self.__complete(temp=temp)
                             f.close()
 
-                    elif type.lower() == "other" or type.lower() == "o":
+                    elif typ.lower() == "other" or typ.lower() == "o":
                         path = path.replace("/", "\\")
                         location = self.dataLocation.replace("/", "\\")
                         self.os.system(
                             f"copy \"{path}\" \"{location}{directory}\\{entry}\\otherFiles\"")
                         with open(self.jsonLocation, "r") as f:
                             temp = self.json.load(f)
-                            data = {"name": name + exten,
+                            data = {"name": rname + exten,
                                     "size": self.os.path.getsize(path)}
                             temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name] = data
                             self.__complete(temp=temp)
@@ -253,33 +277,39 @@ class write:
             else:
                 return 1
 
-    def removeItem(self, name=None, entry=None, directory=None, type=None):
-        if name is None or entry is None or directory is None or type is None:
+    def removeItem(self, name=None, entry=None, directory=None, typ=None):
+        if name is None or entry is None or directory is None or typ is None:
             return
 
         else:
-            try:
-                location = self.dataLocation.replace("/", "\\")
-                if type.lower() == "image" or type.lower() == "i":
-                    with open(self.jsonLocation, "r") as f:
-                        temp = self.json.load(f)
-                        rname = temp["dir"][directory]["content"][entry]["content"]["images"][name]["name"]
-                        self.os.system(
-                            f"del \"{location}{directory}\\{entry}\\images\\{rname}\"")
-                        del temp["dir"][directory]["content"][entry]["content"]["images"][name]
-                        self.__complete(temp=temp)
+            if "," in name:
+                    nameItems = name.split(",")        
+                    for i in range(len(nameItems)):
+                        self.removeItem(name=nameItems[i].strip(),entry=entry, directory=directory, typ=typ )
+                        
+            else:
+                try:
+                    location = self.dataLocation.replace("/", "\\")
+                    if typ.lower() == "image" or typ.lower() == "i":
+                        with open(self.jsonLocation, "r") as f:
+                            temp = self.json.load(f)
+                            rname = temp["dir"][directory]["content"][entry]["content"]["images"][name]["name"]
+                            self.os.system(
+                                f"del \"{location}{directory}\\{entry}\\images\\{rname}\"")
+                            del temp["dir"][directory]["content"][entry]["content"]["images"][name]
+                            self.__complete(temp=temp)
 
-                elif type.lower() == "other" or type.lower() == "o":
-                    with open(self.jsonLocation, "r") as f:
-                        temp = self.json.load(f)
-                        rname = temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name]["name"]
-                        self.os.system(
-                            f"del \"{location}{directory}\\{entry}\\otherFiles\\{rname}\"")
-                        del temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name]
-                        self.__complete(temp=temp)
+                    elif typ.lower() == "other" or typ.lower() == "o":
+                        with open(self.jsonLocation, "r") as f:
+                            temp = self.json.load(f)
+                            rname = temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name]["name"]
+                            self.os.system(
+                                f"del \"{location}{directory}\\{entry}\\otherFiles\\{rname}\"")
+                            del temp["dir"][directory]["content"][entry]["content"]["otherFiles"][name]
+                            self.__complete(temp=temp)
 
-            except(Exception):
-                return 1
+                except(Exception):
+                    return 1
 
     def __complete(self, temp):
         with open(self.jsonLocation, "w") as f:
